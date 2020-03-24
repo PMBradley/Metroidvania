@@ -1,0 +1,547 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Scripts/World/zTest Stone/TestStone Manager.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/World/zTest Stone/TestStone Globals.gd" type="Script" id=2]
+[ext_resource path="res://Art/zTest/GROUND.png" type="Texture" id=3]
+[ext_resource path="res://Art/zTest/Circle Light.png" type="Texture" id=4]
+[ext_resource path="res://Art/zTest/GROUND (in the back).png" type="Texture" id=5]
+
+[sub_resource type="PhysicsMaterial" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 443.418, 3.33136 )
+
+[sub_resource type="PhysicsMaterial" id=3]
+
+[sub_resource type="PhysicsMaterial" id=4]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 9.74567, 73.9816 )
+
+[sub_resource type="PhysicsMaterial" id=6]
+
+[sub_resource type="OccluderPolygon2D" id=7]
+polygon = PoolVector2Array( -443.458, -78.4703, 443.463, -78.4555, 443.504, 78.4871, -443.489, 78.4969 )
+
+[sub_resource type="PhysicsMaterial" id=8]
+friction = 0.0
+
+[sub_resource type="PhysicsMaterial" id=9]
+friction = 0.0
+
+[sub_resource type="PhysicsMaterial" id=10]
+friction = 0.0
+
+[node name="TestStone Manager" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="TestStone Globals" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Foreground" type="Node2D" parent="."]
+
+[node name="Static Obstacles" type="Node2D" parent="Foreground"]
+
+[node name="Ground" type="Node2D" parent="Foreground/Static Obstacles"]
+
+[node name="G1" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+position = Vector2( 3638.96, 3755.25 )
+scale = Vector2( 6.36725, 6.14101 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G1"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G1/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G1"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G1/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G1"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 4 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G1/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G1"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G1/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G1"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="G2" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+position = Vector2( 9084.86, 3848.02 )
+rotation = -0.380482
+scale = Vector2( 2.66907, 4.53382 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G2"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G2/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G2"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G2/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G2"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 9 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G2/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G2"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G2/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G2"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="G3" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+position = Vector2( 11545.1, 3469.53 )
+scale = Vector2( 1.2467, 6.14101 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G3"]
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G3/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G3"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G3/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G3"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 9 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G3/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G3"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G3/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G3"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="G4" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+position = Vector2( 15835.4, 3315.39 )
+scale = Vector2( 1.94182, 4.83194 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G4"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G4/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G4"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G4/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G4"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 9 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G4/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G4"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G4/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G4"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="G5" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+position = Vector2( 21154.1, 3642.45 )
+scale = Vector2( 1.87067, 5.65011 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G5"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G5/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G5"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G5/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G5"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 9 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G5/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G5"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G5/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G5"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="G6" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+position = Vector2( 26076.7, 2926.65 )
+scale = Vector2( 6.15451, 5.65011 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G6"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G6/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G6"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G6/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G6"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 9 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G6/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G6"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G6/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G6"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="G7" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+position = Vector2( 40373.1, 6488.16 )
+scale = Vector2( 16.8794, 27.577 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 3 )
+
+[node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G7"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G7/Top"]
+position = Vector2( 0, -75.0691 )
+shape = SubResource( 2 )
+
+[node name="Bottom" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G7"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G7/Bottom"]
+position = Vector2( 0, 75.069 )
+shape = SubResource( 2 )
+
+[node name="Left" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G7"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 9 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G7/Left"]
+position = Vector2( -433.628, 1.13983 )
+shape = SubResource( 5 )
+
+[node name="Right" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G7"]
+editor/display_folded = true
+visible = false
+collision_layer = 1023
+physics_material_override = SubResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Foreground/Static Obstacles/Ground/G7/Right"]
+position = Vector2( 433.566, 1.95404 )
+shape = SubResource( 5 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Foreground/Static Obstacles/Ground/G7"]
+z_index = -1
+occluder = SubResource( 7 )
+
+[node name="Features" type="Node2D" parent="Foreground/Static Obstacles"]
+editor/display_folded = true
+
+[node name="THE SUn" type="Light2D" parent="Foreground/Static Obstacles/Features"]
+position = Vector2( 3860.7, -1211.27 )
+scale = Vector2( 180.779, 217.809 )
+texture = ExtResource( 4 )
+energy = 1.67
+range_height = 9.6
+range_z_min = -5
+shadow_enabled = true
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_filter_smooth = 64.0
+
+[node name="THE SUn2" type="Light2D" parent="Foreground/Static Obstacles/Features"]
+position = Vector2( 12415.6, -825.909 )
+scale = Vector2( 180.779, 217.809 )
+texture = ExtResource( 4 )
+energy = 1.67
+range_height = 9.6
+range_z_min = -5
+shadow_enabled = true
+shadow_filter_smooth = 64.0
+
+[node name="THE SUn3" type="Light2D" parent="Foreground/Static Obstacles/Features"]
+position = Vector2( 24683.2, -2171.75 )
+scale = Vector2( 180.779, 217.809 )
+texture = ExtResource( 4 )
+energy = 1.67
+range_height = 9.6
+range_z_min = -5
+shadow_enabled = true
+shadow_filter_smooth = 64.0
+
+[node name="THE SUn4" type="Light2D" parent="Foreground/Static Obstacles/Features"]
+position = Vector2( 41367.8, -5252.52 )
+scale = Vector2( 197.29, 217.809 )
+texture = ExtResource( 4 )
+energy = 1.67
+range_height = 15.7
+range_z_min = -5
+shadow_enabled = true
+shadow_filter_smooth = 64.0
+
+[node name="Background" type="Node2D" parent="."]
+editor/display_folded = true
+z_index = -4
+
+[node name="BG1" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 3926.79, 2885.26 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG2" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 12441.4, 2888.27 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG3" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 20904.9, 2888.27 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG4" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 29451.2, 2888.27 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG5" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 37969.6, 2888.27 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG6" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 38213, 9135.11 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG14" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 29854.5, 9135.11 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG7" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 46542.1, 9108.07 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG8" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 46515.1, 3050.52 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG9" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 29532.3, -3358.58 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG10" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 37969.6, -3358.58 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG12" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 46352.8, -3250.41 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG11" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 20986.8, -3358.58 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
+
+[node name="BG13" type="Sprite" parent="Background"]
+modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+position = Vector2( 12522.5, -3331.54 )
+scale = Vector2( 9.73494, 12.796 )
+texture = ExtResource( 5 )
+normal_map = ExtResource( 5 )
