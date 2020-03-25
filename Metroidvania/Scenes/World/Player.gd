@@ -44,7 +44,7 @@ var trans_pid_b = .17
 var first_ground_touch = true
 #var ground_touch_margin = 1
 #var frames_since_ground_touch = ground_touch_margin + 1
-var ground_touch_range = 1.4
+var ground_touch_range = 1.0
 
 
 func _physics_process(delta):# the main loop for player
@@ -53,8 +53,22 @@ func _physics_process(delta):# the main loop for player
 	if(is_on_floor()):
 		w_globals.player.touching_ground = true
 	else:
+		get_node("RayDetectors/GroundDetector_right").cast_to.x = 18
+		get_node("RayDetectors/GroundDetector_left").cast_to.x = 18
 		var result_l = get_node("RayDetectors/GroundDetector_left").is_colliding()
 		var result_r = get_node("RayDetectors/GroundDetector_right").is_colliding()
+		
+		if(result_l and result_r):
+			self.rotate(0)
+			w_globals.player.touching_ground = true
+			
+		else:
+			get_node("RayDetectors/GroundDetector_right").cast_to.x = 1000
+			get_node("RayDetectors/GroundDetector_left").cast_to.x = 1000
+			if(result_l):
+				self.rotate(-PI/32)
+			elif(result_r):
+				self.rotate(PI/32)
 		
 		if(result_l or result_r):
 			print("raycast collision")
@@ -128,6 +142,7 @@ func _process(delta):
 		w_globals.player.jumping = "up"
 	else:
 		w_globals.player.jumping = "not"
+	
 	
 
 
