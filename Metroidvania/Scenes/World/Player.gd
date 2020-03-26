@@ -45,44 +45,39 @@ func _ready():
 var trans_pid_b = 11
 
 var first_ground_touch = true
-var first_roof_touch = true
-var first_wall_left_touch = true
-var first_wall_right_touch = true
 
-var last_pos # change
+#var ground_touch_margin = 1
+#var frames_since_ground_touch = ground_touch_margin + 1
+var ground_touch_range = 1.0
 
 
 func _physics_process(delta):# the main loop for player
 	pull_globals()
 	
-	
-	if(Input.is_action_just_pressed("ui_home")):
-		w_globals.player.reset_player = true
-	
-	if(Input.is_action_pressed("ui_left")):
-		w_globals.player.moving = "left"
-	elif(Input.is_action_pressed("ui_right")):
-		w_globals.player.moving = "right"
-	else:
-		w_globals.player.moving = "not"
-	
-	if(Input.is_action_just_pressed("ui_jump")):
-		w_globals.player.jumping = "up"
-	else:
-		w_globals.player.jumping = "not"
-	
-	
-	
-	
+	get_node("RayDetectors/GroundDetector_right").cast_to.x = 10
+	get_node("RayDetectors/GroundDetector_left").cast_to.x = 10
+	var result_l = get_node("RayDetectors/GroundDetector_left").is_colliding()
+	var result_r = get_node("RayDetectors/GroundDetector_right").is_colliding()
 	
 	if(is_on_floor()):
 		w_globals.player.touching_ground = true
 	else:
-		var result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
-		var result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
-		var result_m = get_node("RayDetectors/GroundDetectors/GroundDetector_mid").is_colliding()
+		if(result_l and result_r):
+			self.rotate(0)
+			w_globals.player.touching_ground = true
+			
+		else:
+			get_node("RayDetectors/GroundDetector_right").cast_to.x = 50
+			get_node("RayDetectors/GroundDetector_left").cast_to.x = 50
+			if(result_l):
+				self.rotate(-PI/16)
+			elif(result_r):
+				self.rotate(PI/16)
+			get_node("RayDetectors/GroundDetector_right").cast_to.x = 10
+			get_node("RayDetectors/GroundDetector_left").cast_to.x = 10
 		
-		if(result_l or result_r or result_m):
+		if(result_l and result_r):
+			print("raycast collision")
 			w_globals.player.touching_ground = true
 		else:
 			w_globals.player.touching_ground = false
@@ -190,22 +185,22 @@ func _physics_process(delta):# the main loop for player
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-#	if(Input.is_action_just_pressed("ui_home")):
-#		w_globals.player.reset_player = true
-#
-#	if(Input.is_action_pressed("ui_left")):
-#		w_globals.player.moving = "left"
-#	elif(Input.is_action_pressed("ui_right")):
-#		w_globals.player.moving = "right"
-#	else:
-#		w_globals.player.moving = "not"
-#
-#	if(Input.is_action_just_pressed("ui_jump")):
-#		w_globals.player.jumping = "up"
-#	else:
-#		w_globals.player.jumping = "not"
-	pass
-
+	if(Input.is_action_just_pressed("ui_home")):
+		w_globals.player.reset_player = true
+	
+	if(Input.is_action_pressed("ui_left")):
+		w_globals.player.moving = "left"
+	elif(Input.is_action_pressed("ui_right")):
+		w_globals.player.moving = "right"
+	else:
+		w_globals.player.moving = "not"
+	
+	if(Input.is_action_just_pressed("ui_jump")):
+		w_globals.player.jumping = "up"
+	else:
+		w_globals.player.jumping = "not"
+	
+	
 
 #var rotate_pid_a = .01
 #var rotate_pid_b = 1
