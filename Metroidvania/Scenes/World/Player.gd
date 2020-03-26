@@ -50,27 +50,30 @@ var ground_touch_range = 1.0
 func _physics_process(delta):# the main loop for player
 	pull_globals()
 	
+	get_node("RayDetectors/GroundDetector_right").cast_to.x = 10
+	get_node("RayDetectors/GroundDetector_left").cast_to.x = 10
+	var result_l = get_node("RayDetectors/GroundDetector_left").is_colliding()
+	var result_r = get_node("RayDetectors/GroundDetector_right").is_colliding()
+	
 	if(is_on_floor()):
 		w_globals.player.touching_ground = true
 	else:
-		get_node("RayDetectors/GroundDetector_right").cast_to.x = 18
-		get_node("RayDetectors/GroundDetector_left").cast_to.x = 18
-		var result_l = get_node("RayDetectors/GroundDetector_left").is_colliding()
-		var result_r = get_node("RayDetectors/GroundDetector_right").is_colliding()
 		
 		if(result_l and result_r):
 			self.rotate(0)
 			w_globals.player.touching_ground = true
 			
 		else:
-			get_node("RayDetectors/GroundDetector_right").cast_to.x = 1000
-			get_node("RayDetectors/GroundDetector_left").cast_to.x = 1000
+			get_node("RayDetectors/GroundDetector_right").cast_to.x = 50
+			get_node("RayDetectors/GroundDetector_left").cast_to.x = 50
 			if(result_l):
-				self.rotate(-PI/32)
+				self.rotate(-PI/16)
 			elif(result_r):
-				self.rotate(PI/32)
+				self.rotate(PI/16)
+			get_node("RayDetectors/GroundDetector_right").cast_to.x = 10
+			get_node("RayDetectors/GroundDetector_left").cast_to.x = 10
 		
-		if(result_l or result_r):
+		if(result_l and result_r):
 			print("raycast collision")
 			w_globals.player.touching_ground = true
 		else:
