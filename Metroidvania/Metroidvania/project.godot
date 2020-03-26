@@ -32,8 +32,8 @@ settings/profiler/max_functions=16387
 
 [display]
 
-window/size/width=7680
-window/size/height=4320
+window/size/width=3840
+window/size/height=2160
 window/size/fullscreen=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
@@ -81,6 +81,7 @@ ui_exit={
 
 [physics]
 
+common/physics_jitter_fix=1e+006
 2d/default_gravity=5500
 
 [rendering]

@@ -35,7 +35,6 @@ func _process(delta):
 	push_globals()
 
 
-
 func update_phys_from_vel(): # updates positions and rotation from the coustom velocity vars
 	
 	position.x = position.x as float + w_globals.cam.lin_vel.x as float

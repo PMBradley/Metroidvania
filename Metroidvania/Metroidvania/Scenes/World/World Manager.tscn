@@ -40,12 +40,14 @@ normal_map = ExtResource( 5 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Player"]
 scale = Vector2( 1.05, 1.01 )
-z_index = 1
+z_index = 2
 occluder = SubResource( 1 )
 
 [node name="Notifiers" type="Node2D" parent="Player"]
 editor/display_folded = true
 visible = false
+=======
+
 
 [node name="True" type="Light2D" parent="Player/Notifiers"]
 position = Vector2( 5.27441, -218.003 )
@@ -66,7 +68,6 @@ editor/display_folded = true
 visible = false
 
 [node name="GroundDetectors" type="Node2D" parent="Player/RayDetectors"]
-editor/display_folded = true
 
 [node name="GroundDetector_left" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
 position = Vector2( -200, 430 )
@@ -100,14 +101,14 @@ collision_mask = 32
 position = Vector2( 185.994, -430 )
 rotation = 3.14159
 enabled = true
-cast_to = Vector2( 0, 35 )
+cast_to = Vector2( 0, 18 )
 collision_mask = 32
 
 [node name="RoofDetector_mid" type="RayCast2D" parent="Player/RayDetectors/RoofDetectors"]
 position = Vector2( 0, -430 )
 rotation = 3.14159
 enabled = true
-cast_to = Vector2( 0, 35 )
+cast_to = Vector2( 0, 18 )
 collision_mask = 32
 
 [node name="LeftWallDetectors" type="Node2D" parent="Player/RayDetectors"]
