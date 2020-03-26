@@ -40,7 +40,7 @@ func _process(delta):
 	if(run_time >= last_debug_run_start + (1.0/debug_per_sec) ): # Only runs so many times per second (determined by 'debugPerSec'), used for updating debug output
 		first_run[0] = 0;
 		last_debug_run_start = run_time;
-		print_debug(run_time)
+		#print_debug(run_time)
 		
 	if(w_globals.levels.queue_level >= -1): # if there is a level change in the queue
 		if(w_globals.levels.queue_level == -1):
@@ -55,7 +55,6 @@ func _process(delta):
 		w_globals.levels.queue_level = -2 #empty the queue
 	
 	fire_weapons()
-	
 	
 
 

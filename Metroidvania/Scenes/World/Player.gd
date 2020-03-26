@@ -15,7 +15,8 @@ var lin_vel = Vector2(0, 0)
 
 var side_thrust_force = 50
 var jump_thrust_force = 2400
-#var side_stop_force = 2000
+
+
 
 
 
@@ -34,86 +35,27 @@ var w_globals
 func _ready():
 	w_globals = get_node("/root/WorldGlobals")
 	
+	last_pos = position # change
+	
 	pull_globals() #ensures the proper starting values
 
 
 
 
-var trans_pid_b = .17
+var trans_pid_b = 11
 
 var first_ground_touch = true
-#var ground_touch_margin = 1
-#var frames_since_ground_touch = ground_touch_margin + 1
-var ground_touch_range = 1.4
+var first_roof_touch = true
+var first_wall_left_touch = true
+var first_wall_right_touch = true
+
+var last_pos # change
 
 
 func _physics_process(delta):# the main loop for player
 	pull_globals()
 	
-	if(is_on_floor()):
-		w_globals.player.touching_ground = true
-	else:
-		var result_l = get_node("RayDetectors/GroundDetector_left").is_colliding()
-		var result_r = get_node("RayDetectors/GroundDetector_right").is_colliding()
-		
-		if(result_l or result_r):
-			print("raycast collision")
-			w_globals.player.touching_ground = true
-		else:
-			w_globals.player.touching_ground = false
 	
-#	if(get_node("RayDetectors/LeftWallDetector_mid").is_colliding() or get_node("RayDetectors/LeftWallDetector_top") or ):
-#		w_globals.touch
-	
-	
-	if (w_globals.player.reset_player):
-		position = w_globals.levels.level[w_globals.levels.active_level + 1].reset_pos
-		w_globals.cam.pos = w_globals.levels.level[w_globals.levels.active_level + 1].cam_reset_pos
-		lin_vel = Vector2(0,0)
-		
-		w_globals.player.reset_player = false
-	
-	#angular_velocity = 0
-	#rotation_degrees = w_globals.player.target_deg
-	#rotate_to_target(w_globals.player.target_deg)
-	#print(linear_velocity)
-	
-	
-	var target_vel = 0
-	if(w_globals.player.moving == "left"): # horizontal movement
-		target_vel = -w_globals.player.run_speed_max
-	elif(w_globals.player.moving == "right"):
-		target_vel = w_globals.player.run_speed_max
-	
-	var error = target_vel - lin_vel.x
-	
-	lin_vel.x += error * trans_pid_b
-	
-	if(w_globals.player.touching_ground):
-		if(first_ground_touch):
-			lin_vel.y = 0
-			first_ground_touch = false
-		
-		if(w_globals.player.jumping == "up"):
-			lin_vel.y -= jump_thrust_force
-		
-		get_node("Notifiers/True").visible = true
-		get_node("Notifiers/False").visible = false
-	else:
-		lin_vel.y += w_globals.player.gravity * delta #add to gravity when in the air
-		first_ground_touch = true
-		
-		get_node("Notifiers/True").visible = false
-		get_node("Notifiers/False").visible = true
-	
-	move_and_slide(lin_vel, Vector2(0, -1))
-	
-	push_globals()
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
 	if(Input.is_action_just_pressed("ui_home")):
 		w_globals.player.reset_player = true
 	
@@ -129,6 +71,140 @@ func _process(delta):
 	else:
 		w_globals.player.jumping = "not"
 	
+	
+	
+	
+	
+	if(is_on_floor()):
+		w_globals.player.touching_ground = true
+	else:
+		var result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
+		var result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
+		var result_m = get_node("RayDetectors/GroundDetectors/GroundDetector_mid").is_colliding()
+		
+		if(result_l or result_r or result_m):
+			w_globals.player.touching_ground = true
+		else:
+			w_globals.player.touching_ground = false
+	
+	
+	if(is_on_ceiling()):
+		w_globals.player.touching_roof = true
+	else:
+		var result_l = get_node("RayDetectors/RoofDetectors/RoofDetector_left").is_colliding()
+		var result_r = get_node("RayDetectors/RoofDetectors/RoofDetector_right").is_colliding()
+		var result_m = get_node("RayDetectors/RoofDetectors/RoofDetector_mid").is_colliding()
+		
+		if(result_l or result_r or result_m):
+			w_globals.player.touching_roof = true
+		else:
+			w_globals.player.touching_roof = false
+	
+	
+	var right_result_t = get_node("RayDetectors/RightWallDetectors/RightWallDetector_top").is_colliding()
+	var right_result_b = get_node("RayDetectors/RightWallDetectors/RightWallDetector_bottom").is_colliding()
+	var right_result_m = get_node("RayDetectors/RightWallDetectors/RightWallDetector_mid").is_colliding()
+	
+	if(right_result_t or right_result_b or right_result_m):
+		w_globals.player.touching_wall_right= true
+	else:
+		w_globals.player.touching_wall_right = false
+	
+	
+	var left_result_t = get_node("RayDetectors/LeftWallDetectors/LeftWallDetector_top").is_colliding()
+	var left_result_b = get_node("RayDetectors/LeftWallDetectors/LeftWallDetector_bottom").is_colliding()
+	var left_result_m = get_node("RayDetectors/LeftWallDetectors/LeftWallDetector_mid").is_colliding()
+	
+	if(left_result_t or left_result_b or left_result_m):
+		w_globals.player.touching_wall_left = true
+	else:
+		w_globals.player.touching_wall_left = false
+	
+	
+	
+	if (w_globals.player.reset_player):
+		position = w_globals.levels.level[w_globals.levels.active_level + 1].reset_pos
+		w_globals.cam.pos = w_globals.levels.level[w_globals.levels.active_level + 1].cam_reset_pos
+		lin_vel = Vector2(0,0)
+		
+		w_globals.player.reset_player = false
+	
+	
+	var target_vel = 0
+	if(w_globals.player.moving == "left"): # horizontal movement
+		target_vel = -w_globals.player.run_speed_max
+	elif(w_globals.player.moving == "right"):
+		target_vel = w_globals.player.run_speed_max
+	
+	var error = target_vel - lin_vel.x
+	
+	lin_vel.x += error * trans_pid_b * delta
+	
+	
+	if(w_globals.player.touching_ground):
+		if(first_ground_touch):
+			lin_vel.y = 0
+			first_ground_touch = false
+		
+		if(w_globals.player.jumping == "up"):
+			lin_vel.y -= jump_thrust_force
+		
+	else:
+		lin_vel.y += w_globals.player.gravity * delta #add to gravity when in the air
+		first_ground_touch = true
+	
+	
+	if(w_globals.player.touching_roof):
+		if(first_roof_touch):
+			lin_vel.y = 0
+			first_roof_touch = false
+	else:
+		first_roof_touch = true
+	
+	
+	if(w_globals.player.touching_wall_right):
+		if(first_wall_right_touch):
+			lin_vel.x = 0
+			first_wall_right_touch = false
+	else:
+		first_wall_right_touch = true
+	
+	
+	if(w_globals.player.touching_wall_left):
+		if(first_wall_left_touch):
+			lin_vel.x = 0
+			first_wall_left_touch = false
+	else:
+		first_wall_left_touch = true
+	
+	
+	move_and_slide(lin_vel, Vector2(0, -1))
+	
+	print(position - last_pos) # change
+	last_pos = position
+	
+	
+	push_globals()
+
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+#	if(Input.is_action_just_pressed("ui_home")):
+#		w_globals.player.reset_player = true
+#
+#	if(Input.is_action_pressed("ui_left")):
+#		w_globals.player.moving = "left"
+#	elif(Input.is_action_pressed("ui_right")):
+#		w_globals.player.moving = "right"
+#	else:
+#		w_globals.player.moving = "not"
+#
+#	if(Input.is_action_just_pressed("ui_jump")):
+#		w_globals.player.jumping = "up"
+#	else:
+#		w_globals.player.jumping = "not"
+	pass
 
 
 #var rotate_pid_a = .01
