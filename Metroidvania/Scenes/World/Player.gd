@@ -15,7 +15,8 @@ var lin_vel = Vector2(0, 0)
 
 var side_thrust_force = 50
 var jump_thrust_force = 2400
-#var side_stop_force = 2000
+
+
 
 
 
@@ -34,14 +35,17 @@ var w_globals
 func _ready():
 	w_globals = get_node("/root/WorldGlobals")
 	
+	last_pos = position # change
+	
 	pull_globals() #ensures the proper starting values
 
 
 
 
-var trans_pid_b = .17
+var trans_pid_b = 11
 
 var first_ground_touch = true
+
 #var ground_touch_margin = 1
 #var frames_since_ground_touch = ground_touch_margin + 1
 var ground_touch_range = 1.0
@@ -58,7 +62,6 @@ func _physics_process(delta):# the main loop for player
 	if(is_on_floor()):
 		w_globals.player.touching_ground = true
 	else:
-		
 		if(result_l and result_r):
 			self.rotate(0)
 			w_globals.player.touching_ground = true
@@ -79,8 +82,39 @@ func _physics_process(delta):# the main loop for player
 		else:
 			w_globals.player.touching_ground = false
 	
-#	if(get_node("RayDetectors/LeftWallDetector_mid").is_colliding() or get_node("RayDetectors/LeftWallDetector_top") or ):
-#		w_globals.touch
+	
+	if(is_on_ceiling()):
+		w_globals.player.touching_roof = true
+	else:
+		var result_l = get_node("RayDetectors/RoofDetectors/RoofDetector_left").is_colliding()
+		var result_r = get_node("RayDetectors/RoofDetectors/RoofDetector_right").is_colliding()
+		var result_m = get_node("RayDetectors/RoofDetectors/RoofDetector_mid").is_colliding()
+		
+		if(result_l or result_r or result_m):
+			w_globals.player.touching_roof = true
+		else:
+			w_globals.player.touching_roof = false
+	
+	
+	var right_result_t = get_node("RayDetectors/RightWallDetectors/RightWallDetector_top").is_colliding()
+	var right_result_b = get_node("RayDetectors/RightWallDetectors/RightWallDetector_bottom").is_colliding()
+	var right_result_m = get_node("RayDetectors/RightWallDetectors/RightWallDetector_mid").is_colliding()
+	
+	if(right_result_t or right_result_b or right_result_m):
+		w_globals.player.touching_wall_right= true
+	else:
+		w_globals.player.touching_wall_right = false
+	
+	
+	var left_result_t = get_node("RayDetectors/LeftWallDetectors/LeftWallDetector_top").is_colliding()
+	var left_result_b = get_node("RayDetectors/LeftWallDetectors/LeftWallDetector_bottom").is_colliding()
+	var left_result_m = get_node("RayDetectors/LeftWallDetectors/LeftWallDetector_mid").is_colliding()
+	
+	if(left_result_t or left_result_b or left_result_m):
+		w_globals.player.touching_wall_left = true
+	else:
+		w_globals.player.touching_wall_left = false
+	
 	
 	
 	if (w_globals.player.reset_player):
@@ -89,11 +123,6 @@ func _physics_process(delta):# the main loop for player
 		lin_vel = Vector2(0,0)
 		
 		w_globals.player.reset_player = false
-	
-	#angular_velocity = 0
-	#rotation_degrees = w_globals.player.target_deg
-	#rotate_to_target(w_globals.player.target_deg)
-	#print(linear_velocity)
 	
 	
 	var target_vel = 0
@@ -104,7 +133,8 @@ func _physics_process(delta):# the main loop for player
 	
 	var error = target_vel - lin_vel.x
 	
-	lin_vel.x += error * trans_pid_b
+	lin_vel.x += error * trans_pid_b * delta
+	
 	
 	if(w_globals.player.touching_ground):
 		if(first_ground_touch):
@@ -114,16 +144,40 @@ func _physics_process(delta):# the main loop for player
 		if(w_globals.player.jumping == "up"):
 			lin_vel.y -= jump_thrust_force
 		
-		get_node("Notifiers/True").visible = true
-		get_node("Notifiers/False").visible = false
 	else:
 		lin_vel.y += w_globals.player.gravity * delta #add to gravity when in the air
 		first_ground_touch = true
-		
-		get_node("Notifiers/True").visible = false
-		get_node("Notifiers/False").visible = true
+	
+	
+	if(w_globals.player.touching_roof):
+		if(first_roof_touch):
+			lin_vel.y = 0
+			first_roof_touch = false
+	else:
+		first_roof_touch = true
+	
+	
+	if(w_globals.player.touching_wall_right):
+		if(first_wall_right_touch):
+			lin_vel.x = 0
+			first_wall_right_touch = false
+	else:
+		first_wall_right_touch = true
+	
+	
+	if(w_globals.player.touching_wall_left):
+		if(first_wall_left_touch):
+			lin_vel.x = 0
+			first_wall_left_touch = false
+	else:
+		first_wall_left_touch = true
+	
 	
 	move_and_slide(lin_vel, Vector2(0, -1))
+	
+	print(position - last_pos) # change
+	last_pos = position
+	
 	
 	push_globals()
 
@@ -147,7 +201,6 @@ func _process(delta):
 		w_globals.player.jumping = "not"
 	
 	
-
 
 #var rotate_pid_a = .01
 #var rotate_pid_b = 1

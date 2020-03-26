@@ -25,13 +25,14 @@ func _process(delta):
 		
 		w_globals.cam.reset_cam = false
 	
-	cam_follow()
+	#cam_follow()
 	
-	update_phys_from_vel()
+	position = w_globals.player.pos
+	
+	#update_phys_from_vel()
 	
 	
 	push_globals()
-
 
 
 func update_phys_from_vel(): # updates positions and rotation from the coustom velocity vars

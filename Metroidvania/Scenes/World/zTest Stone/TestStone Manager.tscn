@@ -138,12 +138,14 @@ z_index = -1
 occluder = SubResource( 7 )
 
 [node name="G3" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
 position = Vector2( 11545.1, 3469.53 )
 scale = Vector2( 1.2467, 6.14101 )
 texture = ExtResource( 3 )
 normal_map = ExtResource( 3 )
 
 [node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G3"]
+editor/display_folded = true
 visible = false
 collision_layer = 1023
 physics_material_override = SubResource( 8 )
@@ -230,8 +232,11 @@ z_index = -1
 occluder = SubResource( 7 )
 
 [node name="G5" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
+rotation = -0.15708
 position = Vector2( 21154.1, 3642.45 )
 scale = Vector2( 1.87067, 5.65011 )
+
 texture = ExtResource( 3 )
 normal_map = ExtResource( 3 )
 

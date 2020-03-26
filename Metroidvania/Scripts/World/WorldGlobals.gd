@@ -47,7 +47,7 @@ class Player:
 	var touching_ground = true
 	var touching_wall_right = false
 	var touching_wall_left = false
-	var touching_wall_top = false
+	var touching_roof = false
 	
 	# Weapon Variables
 	var fire_main = false;
