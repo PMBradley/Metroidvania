@@ -39,6 +39,7 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Foreground" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="Static Obstacles" type="Node2D" parent="Foreground"]
 
@@ -233,10 +234,9 @@ occluder = SubResource( 7 )
 
 [node name="G5" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
 editor/display_folded = true
-rotation = -0.15708
 position = Vector2( 21154.1, 3642.45 )
+rotation = -0.15708
 scale = Vector2( 1.87067, 5.65011 )
-
 texture = ExtResource( 3 )
 normal_map = ExtResource( 3 )
 
@@ -416,6 +416,7 @@ shadow_enabled = true
 shadow_filter_smooth = 64.0
 
 [node name="Background" type="Node2D" parent="."]
+editor/display_folded = true
 z_index = -4
 
 [node name="BG1" type="Sprite" parent="Background"]
