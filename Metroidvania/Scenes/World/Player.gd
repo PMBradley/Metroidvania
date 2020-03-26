@@ -35,7 +35,6 @@ var w_globals
 func _ready():
 	w_globals = get_node("/root/WorldGlobals")
 	
-	last_pos = position # change
 	
 	pull_globals() #ensures the proper starting values
 
@@ -45,60 +44,60 @@ func _ready():
 var trans_pid_b = 11
 
 var first_ground_touch = true
-var first_roof_touch = true
-var first_wall_left_touch = true
 var first_wall_right_touch = true
+var first_wall_left_touch = true
 
-var last_pos # change
+#var ground_touch_margin = 1
+#var frames_since_ground_touch = ground_touch_margin + 1
+var ground_touch_range = 20
+var turn_extend_range = 50
 
 
 func _physics_process(delta):# the main loop for player
 	pull_globals()
 	
-	
-	if(Input.is_action_just_pressed("ui_home")):
-		w_globals.player.reset_player = true
-	
-	if(Input.is_action_pressed("ui_left")):
-		w_globals.player.moving = "left"
-	elif(Input.is_action_pressed("ui_right")):
-		w_globals.player.moving = "right"
-	else:
-		w_globals.player.moving = "not"
-	
-	if(Input.is_action_just_pressed("ui_jump")):
-		w_globals.player.jumping = "up"
-	else:
-		w_globals.player.jumping = "not"
+	get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = ground_touch_range
+	get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = ground_touch_range
+	get_node("RayDetectors/GroundDetectors/GroundDetector_mid").cast_to.y = ground_touch_range
+	var result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
+	var result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
+	var result_m = get_node("RayDetectors/GroundDetectors/GroundDetector_mid").is_colliding()
 	
 	
 	
+	if (not (result_l and result_r)):
+		get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = 50
+		get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = 50
+		result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
+		result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
+		
+		if(result_l):
+			self.rotate(.08)
+		elif(result_r):
+			self.rotate(-.08)
+		get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = ground_touch_range
+		get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = ground_touch_range
+		
+		result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
+		result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
 	
-	
-	if(is_on_floor()):
+	if(result_l or result_r or result_m):
 		w_globals.player.touching_ground = true
 	else:
-		var result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
-		var result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
-		var result_m = get_node("RayDetectors/GroundDetectors/GroundDetector_mid").is_colliding()
-		
-		if(result_l or result_r or result_m):
-			w_globals.player.touching_ground = true
-		else:
-			w_globals.player.touching_ground = false
+		w_globals.player.touching_ground = false
 	
 	
-	if(is_on_ceiling()):
-		w_globals.player.touching_roof = true
-	else:
-		var result_l = get_node("RayDetectors/RoofDetectors/RoofDetector_left").is_colliding()
-		var result_r = get_node("RayDetectors/RoofDetectors/RoofDetector_right").is_colliding()
-		var result_m = get_node("RayDetectors/RoofDetectors/RoofDetector_mid").is_colliding()
-		
-		if(result_l or result_r or result_m):
-			w_globals.player.touching_roof = true
-		else:
-			w_globals.player.touching_roof = false
+#	if(is_on_ceiling()):
+#		w_globals.player.touching_roof = true
+#	else:
+#		var result_l = get_node("RayDetectors/RoofDetectors/RoofDetector_left").is_colliding()
+#		var result_r = get_node("RayDetectors/RoofDetectors/RoofDetector_right").is_colliding()
+#		var result_m = get_node("RayDetectors/RoofDetectors/RoofDetector_mid").is_colliding()
+#
+#		if(result_l or result_r or result_m):
+#			w_globals.player.touching_roof = true
+#		else:
+#			w_globals.player.touching_roof = false
 	
 	
 	var right_result_t = get_node("RayDetectors/RightWallDetectors/RightWallDetector_top").is_colliding()
@@ -126,7 +125,7 @@ func _physics_process(delta):# the main loop for player
 		position = w_globals.levels.level[w_globals.levels.active_level + 1].reset_pos
 		w_globals.cam.pos = w_globals.levels.level[w_globals.levels.active_level + 1].cam_reset_pos
 		lin_vel = Vector2(0,0)
-		
+		rotation_degrees = 0
 		w_globals.player.reset_player = false
 	
 	
@@ -154,12 +153,12 @@ func _physics_process(delta):# the main loop for player
 		first_ground_touch = true
 	
 	
-	if(w_globals.player.touching_roof):
-		if(first_roof_touch):
-			lin_vel.y = 0
-			first_roof_touch = false
-	else:
-		first_roof_touch = true
+#	if(w_globals.player.touching_roof):
+#		if(first_roof_touch):
+#			lin_vel.y = 0
+#			first_roof_touch = false
+#	else:
+#		first_roof_touch = true
 	
 	
 	if(w_globals.player.touching_wall_right):
@@ -180,8 +179,6 @@ func _physics_process(delta):# the main loop for player
 	
 	move_and_slide(lin_vel, Vector2(0, -1))
 	
-	print(position - last_pos) # change
-	last_pos = position
 	
 	
 	push_globals()
@@ -190,22 +187,22 @@ func _physics_process(delta):# the main loop for player
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-#	if(Input.is_action_just_pressed("ui_home")):
-#		w_globals.player.reset_player = true
-#
-#	if(Input.is_action_pressed("ui_left")):
-#		w_globals.player.moving = "left"
-#	elif(Input.is_action_pressed("ui_right")):
-#		w_globals.player.moving = "right"
-#	else:
-#		w_globals.player.moving = "not"
-#
-#	if(Input.is_action_just_pressed("ui_jump")):
-#		w_globals.player.jumping = "up"
-#	else:
-#		w_globals.player.jumping = "not"
-	pass
-
+	if(Input.is_action_just_pressed("ui_home")):
+		w_globals.player.reset_player = true
+	
+	if(Input.is_action_pressed("ui_left")):
+		w_globals.player.moving = "left"
+	elif(Input.is_action_pressed("ui_right")):
+		w_globals.player.moving = "right"
+	else:
+		w_globals.player.moving = "not"
+	
+	if(Input.is_action_just_pressed("ui_jump")):
+		w_globals.player.jumping = "up"
+	else:
+		w_globals.player.jumping = "not"
+	
+	
 
 #var rotate_pid_a = .01
 #var rotate_pid_b = 1
