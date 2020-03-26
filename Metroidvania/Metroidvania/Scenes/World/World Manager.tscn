@@ -46,7 +46,7 @@ occluder = SubResource( 1 )
 [node name="Notifiers" type="Node2D" parent="Player"]
 editor/display_folded = true
 visible = false
-=======
+
 
 
 [node name="True" type="Light2D" parent="Player/Notifiers"]
