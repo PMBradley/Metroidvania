@@ -148,12 +148,14 @@ z_index = -1
 occluder = SubResource( 7 )
 
 [node name="G3" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
+editor/display_folded = true
 position = Vector2( 11545.1, 3469.53 )
 scale = Vector2( 1.2467, 6.14101 )
 texture = ExtResource( 3 )
 normal_map = ExtResource( 3 )
 
 [node name="Top" type="StaticBody2D" parent="Foreground/Static Obstacles/Ground/G3"]
+editor/display_folded = true
 visible = false
 collision_layer = 1023
 physics_material_override = SubResource( 8 )
@@ -198,8 +200,8 @@ occluder = SubResource( 7 )
 
 [node name="G4" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
 editor/display_folded = true
-position = Vector2( 15835.4, 3315.39 )
-scale = Vector2( 1.94182, 4.83194 )
+position = Vector2( 15667.4, 3315.39 )
+scale = Vector2( 2.32053, 4.83194 )
 texture = ExtResource( 3 )
 normal_map = ExtResource( 3 )
 
@@ -249,8 +251,9 @@ occluder = SubResource( 7 )
 
 [node name="G5" type="Sprite" parent="Foreground/Static Obstacles/Ground"]
 editor/display_folded = true
-position = Vector2( 21154.1, 3642.45 )
-scale = Vector2( 1.87067, 5.65011 )
+position = Vector2( 20915.4, 3642.45 )
+rotation = -0.15708
+scale = Vector2( 2.40884, 5.65011 )
 texture = ExtResource( 3 )
 normal_map = ExtResource( 3 )
 
@@ -445,7 +448,6 @@ shadow_enabled = true
 shadow_filter_smooth = 64.0
 
 [node name="Background" type="Node2D" parent="."]
-editor/display_folded = true
 z_index = -4
 
 [node name="BG1" type="Sprite" parent="Background"]

@@ -25,10 +25,12 @@ script = ExtResource( 3 )
 script = ExtResource( 4 )
 
 [node name="BodyCollision" type="CollisionPolygon2D" parent="Player"]
+visible = false
 position = Vector2( 0, -0.397209 )
 polygon = PoolVector2Array( 213.394, 1.62714, 216.734, -390.866, 186.671, -440.971, -180.769, -442.641, -212.502, -395.876, -218.001, 382.177, -185.753, 439.541, 187.843, 439.541, 220.359, 384.227 )
 
 [node name="PlayerSprites" type="Node2D" parent="Player"]
+editor/display_folded = true
 scale = Vector2( 7, 14 )
 z_index = 1
 
@@ -38,11 +40,12 @@ normal_map = ExtResource( 5 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Player"]
 scale = Vector2( 1.05, 1.01 )
-z_index = 1
+z_index = 2
 occluder = SubResource( 1 )
 
 [node name="Notifiers" type="Node2D" parent="Player"]
 editor/display_folded = true
+visible = false
 
 [node name="True" type="Light2D" parent="Player/Notifiers"]
 position = Vector2( 5.27441, -218.003 )
@@ -59,20 +62,85 @@ energy = 93.22
 range_height = 1.3
 
 [node name="RayDetectors" type="Node2D" parent="Player"]
+editor/display_folded = true
+visible = false
 
-[node name="GroundDetector_right" type="RayCast2D" parent="Player/RayDetectors"]
-position = Vector2( -183.963, 430 )
+[node name="GroundDetectors" type="Node2D" parent="Player/RayDetectors"]
+
+[node name="GroundDetector_left" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
+position = Vector2( -200, 430 )
 enabled = true
 cast_to = Vector2( 0, 35 )
 collision_mask = 32
 
-[node name="GroundDetector_left" type="RayCast2D" parent="Player/RayDetectors"]
-position = Vector2( 185.994, 430 )
+[node name="GroundDetector_right" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
+position = Vector2( 200, 430 )
 enabled = true
 cast_to = Vector2( 0, 35 )
 collision_mask = 32
 
-[node name="LeftWallDetector_mid" type="RayCast2D" parent="Player/RayDetectors"]
-position = Vector2( -210.329, -0.071228 )
+[node name="GroundDetector_mid" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
+position = Vector2( 0, 430 )
+enabled = true
+cast_to = Vector2( 0, 35 )
+collision_mask = 32
+
+[node name="RoofDetectors" type="Node2D" parent="Player/RayDetectors"]
+editor/display_folded = true
+
+[node name="RoofDetector_left" type="RayCast2D" parent="Player/RayDetectors/RoofDetectors"]
+position = Vector2( -183.963, -430 )
+rotation = 3.14159
+enabled = true
+cast_to = Vector2( 0, 35 )
+collision_mask = 32
+
+[node name="RoofDetector_right" type="RayCast2D" parent="Player/RayDetectors/RoofDetectors"]
+position = Vector2( 185.994, -430 )
+rotation = 3.14159
+enabled = true
+cast_to = Vector2( 0, 35 )
+collision_mask = 32
+
+[node name="RoofDetector_mid" type="RayCast2D" parent="Player/RayDetectors/RoofDetectors"]
+position = Vector2( 0, -430 )
+rotation = 3.14159
+enabled = true
+cast_to = Vector2( 0, 35 )
+collision_mask = 32
+
+[node name="LeftWallDetectors" type="Node2D" parent="Player/RayDetectors"]
+editor/display_folded = true
+
+[node name="LeftWallDetector_mid" type="RayCast2D" parent="Player/RayDetectors/LeftWallDetectors"]
+position = Vector2( -210, 0 )
 rotation = 1.5708
+cast_to = Vector2( 0, 25 )
+
+[node name="LeftWallDetector_top" type="RayCast2D" parent="Player/RayDetectors/LeftWallDetectors"]
+position = Vector2( -210, -375 )
+rotation = 1.5708
+cast_to = Vector2( 0, 25 )
+
+[node name="LeftWallDetector_bottom" type="RayCast2D" parent="Player/RayDetectors/LeftWallDetectors"]
+position = Vector2( -210, 375 )
+rotation = 1.5708
+cast_to = Vector2( 0, 25 )
+
+[node name="RightWallDetectors" type="Node2D" parent="Player/RayDetectors"]
+editor/display_folded = true
+
+[node name="RightWallDetector_mid" type="RayCast2D" parent="Player/RayDetectors/RightWallDetectors"]
+position = Vector2( 215, 0 )
+rotation = -1.5708
+cast_to = Vector2( 0, 25 )
+
+[node name="RightWallDetector_top" type="RayCast2D" parent="Player/RayDetectors/RightWallDetectors"]
+position = Vector2( 215, -375 )
+rotation = -1.5708
+cast_to = Vector2( 0, 25 )
+
+[node name="RightWallDetector_bottom" type="RayCast2D" parent="Player/RayDetectors/RightWallDetectors"]
+position = Vector2( 215, 375 )
+rotation = -1.5708
 cast_to = Vector2( 0, 25 )
