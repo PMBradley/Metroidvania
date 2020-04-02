@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/World/World Manager.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/World/MainCamera.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Scenes/World/Player.gd" type="Script" id=4]
 [ext_resource path="res://Art/zTest/icon.png" type="Texture" id=5]
 [ext_resource path="res://Art/zTest/Circle Light.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/Player/GroundAreaDetector.gd" type="Script" id=7]
 
 [sub_resource type="OccluderPolygon2D" id=1]
 polygon = PoolVector2Array( 179.956, 436.42, 218.916, 374.904, 218.916, -369.444, 175.855, -437.112, -176.839, -437.112, -211.698, -379.697, -213.749, 381.056, -176.839, 436.42 )
@@ -22,15 +23,14 @@ script = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="Player" type="KinematicBody2D" parent="."]
+collision_layer = 3
 script = ExtResource( 4 )
 
 [node name="BodyCollision" type="CollisionPolygon2D" parent="Player"]
-visible = false
 position = Vector2( 0, -0.397209 )
 polygon = PoolVector2Array( 213.394, 1.62714, 216.734, -390.866, 186.671, -440.971, -180.769, -442.641, -212.502, -395.876, -218.001, 382.177, -185.753, 439.541, 187.843, 439.541, 220.359, 384.227 )
 
 [node name="PlayerSprites" type="Node2D" parent="Player"]
-editor/display_folded = true
 scale = Vector2( 7, 14 )
 z_index = 1
 
@@ -44,44 +44,42 @@ z_index = 2
 occluder = SubResource( 1 )
 
 [node name="Notifiers" type="Node2D" parent="Player"]
-editor/display_folded = true
-visible = false
+z_index = 3
 
 [node name="True" type="Light2D" parent="Player/Notifiers"]
 position = Vector2( 5.27441, -218.003 )
 texture = ExtResource( 6 )
 color = Color( 0, 1, 0.0235294, 1 )
-energy = 76.72
-range_height = 1.3
+range_height = 100.0
 
 [node name="False" type="Light2D" parent="Player/Notifiers"]
 position = Vector2( 3.51636, 182.841 )
 texture = ExtResource( 6 )
 color = Color( 1, 0, 0, 1 )
-energy = 93.22
-range_height = 1.3
+range_height = 100.0
 
 [node name="RayDetectors" type="Node2D" parent="Player"]
 
 [node name="GroundDetectors" type="Node2D" parent="Player/RayDetectors"]
+position = Vector2( 0, 10 )
 
 [node name="GroundDetector_left" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
 position = Vector2( -200, 430 )
 enabled = true
-cast_to = Vector2( 0, 20 )
-collision_mask = 32
+cast_to = Vector2( 0, 1 )
+collision_mask = 64
 
 [node name="GroundDetector_right" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
 position = Vector2( 200, 430 )
 enabled = true
-cast_to = Vector2( 0, 20 )
-collision_mask = 32
+cast_to = Vector2( 0, 1 )
+collision_mask = 64
 
 [node name="GroundDetector_mid" type="RayCast2D" parent="Player/RayDetectors/GroundDetectors"]
 position = Vector2( 0, 430 )
 enabled = true
-cast_to = Vector2( 0, 20 )
-collision_mask = 32
+cast_to = Vector2( 0, 1 )
+collision_mask = 64
 
 [node name="RoofDetectors" type="Node2D" parent="Player/RayDetectors"]
 editor/display_folded = true
@@ -142,3 +140,17 @@ cast_to = Vector2( 0, 25 )
 position = Vector2( 215, 375 )
 rotation = -1.5708
 cast_to = Vector2( 0, 25 )
+
+[node name="AreaDetectors" type="Node2D" parent="Player"]
+visible = false
+
+[node name="GroundArea" type="Area2D" parent="Player/AreaDetectors"]
+gravity_vec = Vector2( 0, 0 )
+collision_layer = 32
+collision_mask = 32
+script = ExtResource( 7 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Player/AreaDetectors/GroundArea"]
+polygon = PoolVector2Array( -185.608, 439.84, 188.013, 439.957, 189.683, 446.223, -190.433, 446.174 )
+[connection signal="body_entered" from="Player/AreaDetectors/GroundArea" to="Player/AreaDetectors/GroundArea" method="_on_GroundArea_body_entered"]
+[connection signal="body_exited" from="Player/AreaDetectors/GroundArea" to="Player/AreaDetectors/GroundArea" method="_on_GroundArea_body_exited"]
