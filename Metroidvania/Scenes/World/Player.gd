@@ -5,9 +5,6 @@ extends KinematicBody2D
 var playerActive = true
 
 var viewport
-
-
-
 const angVelMax = 12
 
 
@@ -16,9 +13,11 @@ var lin_vel = Vector2(0, 0)
 var side_thrust_force = 50
 var jump_thrust_force = 2400
 
-
-
-
+var ground_ranges = [100, 100, 100]
+var ground_detect_offsets = [Vector2(-200, 430), Vector2(0, 430), Vector2(200, 430)]
+#var touching_ground_margin = 5
+#var max_ground_detect_range = 150
+var ground_decect_precision = 1
 
 const bullet_regular_speed = 5000
 
@@ -49,44 +48,31 @@ var first_wall_left_touch = true
 
 #var ground_touch_margin = 1
 #var frames_since_ground_touch = ground_touch_margin + 1
-var ground_touch_range = 20
-var turn_extend_range = 50
 
 
 func _physics_process(delta):# the main loop for player
 	pull_globals()
 	
-	get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = ground_touch_range
-	get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = ground_touch_range
-	get_node("RayDetectors/GroundDetectors/GroundDetector_mid").cast_to.y = ground_touch_range
-	var result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
-	var result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
-	var result_m = get_node("RayDetectors/GroundDetectors/GroundDetector_mid").is_colliding()
+	update_ray_ranges()
 	
 	
 	
-	if (not (result_l and result_r)):
-		get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = 50
-		get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = 50
-		result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
-		result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
-		
-		if(result_l):
-			self.rotate(.08)
-		elif(result_r):
-			self.rotate(-.08)
-		get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = ground_touch_range
-		get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = ground_touch_range
-		
-		result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
-		result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
-	
-	if(result_l or result_r or result_m):
-		w_globals.player.touching_ground = true
-	else:
-		w_globals.player.touching_ground = false
-	
-	
+#	if (not (result_l and result_r)):
+#		get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = 50
+#		get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = 50
+#		result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
+#		result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
+#
+#		if(result_l):
+#			self.rotate(.08)
+#		elif(result_r):
+#			self.rotate(-.08)
+#		get_node("RayDetectors/GroundDetectors/GroundDetector_right").cast_to.y = ground_touch_range
+#		get_node("RayDetectors/GroundDetectors/GroundDetector_left").cast_to.y = ground_touch_range
+#
+#		result_l = get_node("RayDetectors/GroundDetectors/GroundDetector_left").is_colliding()
+#		result_r = get_node("RayDetectors/GroundDetectors/GroundDetector_right").is_colliding()
+#
 #	if(is_on_ceiling()):
 #		w_globals.player.touching_roof = true
 #	else:
@@ -153,12 +139,6 @@ func _physics_process(delta):# the main loop for player
 		first_ground_touch = true
 	
 	
-#	if(w_globals.player.touching_roof):
-#		if(first_roof_touch):
-#			lin_vel.y = 0
-#			first_roof_touch = false
-#	else:
-#		first_roof_touch = true
 	
 	
 	if(w_globals.player.touching_wall_right):
@@ -179,7 +159,7 @@ func _physics_process(delta):# the main loop for player
 	
 	move_and_slide(lin_vel, Vector2(0, -1))
 	
-	
+	update_notifiers()
 	
 	push_globals()
 
@@ -212,14 +192,47 @@ func _process(delta):
 #
 #	angular_velocity = (rotate_pid_a * pow(x, 2)) + (rotate_pid_b * x)
 
-#func at_ang_vel_max() -> bool:
-#	var output = false
-#	if (angular_velocity >= angVelMax):
-#		output = true
-#	elif (angular_velocity <= -angVelMax):
-#		output = true
+
+func update_ray_ranges():
+	var relative_pos = position
+	var space_state = get_world_2d().direct_space_state
+	for i in range(3):
+		var result = space_state.intersect_ray(relative_pos + ground_detect_offsets[i], relative_pos + Vector2(0, 100), [self], collision_mask)
+		if(result):
+			print(result.position)
+		
+	
+#	for i in range(3): #get ground ranges
+#		var ray_node
+#		if(i == 0):
+#			ray_node = get_node("RayDetectors/GroundDetectors/GroundDetector_left")
+#		elif(i == 1):
+#			ray_node = get_node("RayDetectors/GroundDetectors/GroundDetector_mid")
+#		else:
+#			ray_node = get_node("RayDetectors/GroundDetectors/GroundDetector_right")
 #
-#	return output
+#		var range_found = false
+#		var current_range = 1
+#		for j in range(max_ground_detect_range):
+#			if(!range_found):
+#				ray_node.cast_to.y = current_range
+#
+#				if(ray_node.is_colliding()):
+#					ground_ranges[i] = current_range
+#					range_found = true
+#					print(i, ": ", ground_ranges[i])
+#
+#				current_range += ground_decect_precision
+		
+		
+
+func update_notifiers():
+	if(w_globals.player.touching_ground):
+		get_node("Notifiers/True").visible = true
+		get_node("Notifiers/False").visible = false
+	else:
+		get_node("Notifiers/True").visible = false
+		get_node("Notifiers/False").visible = true
 
 
 func get_bullet_velocities(var bullet_type):

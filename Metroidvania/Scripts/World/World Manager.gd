@@ -102,3 +102,4 @@ func load_child_at_root(var path, var root_path): #add a scene as a child of the
 	var resource = load(path)
 	var instance = resource.instance()
 	temp_root.add_child(instance)
+

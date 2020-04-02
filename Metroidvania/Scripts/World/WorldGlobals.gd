@@ -44,7 +44,7 @@ class Player:
 	var moving = {"not":0,"left":1, "right":2}
 	var jumping = {"not":0, "up":1, "down":2}
 	
-	var touching_ground = true
+	var touching_ground = false
 	var touching_wall_right = false
 	var touching_wall_left = false
 	var touching_roof = false
